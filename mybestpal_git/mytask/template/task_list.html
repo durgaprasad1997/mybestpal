@@ -1,0 +1,52 @@
+{% load static %}
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of schedule</title>
+
+</head>
+<body background="{% static 'img_first_look/table_background3.jpg' %}">
+
+
+
+    <h1 id="w" align="center"> Welcome {{ user.username }}</h1>
+    <br>
+    <br>
+    <h3 id="logout" align="center"><a href="/logout/" class="btn btn-success"><h3>logout</h3></a></h3>
+
+
+    <h2 align="center" id="c">
+        <b>List of schedule</b>
+    </h2>
+
+    <h4 id="a" align="center"><a href="/addtask/{{ user.id }}/" class="btn btn-success"><h2>ADD NEW TASK</h2></a></h4>
+    <table  border="10" align="center" cellspacing="10" cellpadding="10" style="background-color:#ffffcc;" >
+        <tr>
+
+            <th>Type</th>
+            <th>Start Date</th>
+            <th>start time</th>
+            <th>Description</th>
+        </tr>
+        {% for res in tasks %}
+        <tr>
+
+
+            <td>{{res.type}}</td>
+            <td>{{res.start_date}}</td>
+            <td>{{res.start_time}}</td>
+            <td>{{res.description}}</td>
+
+            <td><a href="/deletetask/{{ res.id }}/" class="btn btn-success">delete</a></td>
+        <!-- <td><a href="/updatetask/{{ res.id }}/" class="btn btn-success">update</a></td> -->
+        </tr>
+        {% endfor %}
+        </table>
+
+
+
+
+</body>
+</html>
