@@ -26,7 +26,7 @@ SECRET_KEY = '6yb24@v7mz(q43we=*a0go2n22h1jpy7*o%#zj2+d$!d9xz3lz'
 DEBUG = True
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['192.168.1.7', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1',"mybestpal.herokuapp.com"]
 
 
 # Application definition
@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'login_signup.apps.LoginSignUpConfig',
     'firstlook.apps.FirstlookConfig',
     'mytask.apps.MytaskConfig',
+    'games.apps.GamesConfig',
+    'game2048.apps.Game2048Config',
+    'gametictactoe.apps.GametictactoeConfig',
+    'main.apps.MainConfig',
+
+
 
 
     'django.contrib.admin',
@@ -59,10 +65,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'mybestpal.urls'
 
+
+#'DIRS': ["C:/summer_apps/final_mybestpal_v2/mybestpal/gametictactoe/template/","C:/summer_apps/final_mybestpal_v2/mybestpal/game2048/template/","C:/summer_apps/final_mybestpal_v2/mybestpal/games/template/","C:/summer_apps/final_mybestpal_v2/mybestpal/mytask/template/","C:/summer_apps/final_mybestpal_v2/mybestpal/firstlook/template/","C:/summer_apps/final_mybestpal_v2/mybestpal/login_signup/template/","C:/summer_apps/final_mybestpal_v2/mybestpal/login_signup/views/Login_v1/Login_v1/",],
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["C:/summer_apps/final_mybestpal_v2/mybestpal/mytask/template/","C:/summer_apps/final_mybestpal_v2/mybestpal/firstlook/template/","C:/summer_apps/final_mybestpal_v2/mybestpal/login_signup/template/","C:/summer_apps/final_mybestpal_v2/mybestpal/login_signup/views/Login_v1/Login_v1/",],
+        'DIRS':[os.path.join(BASE_DIR, 'gametictactoe/template/'),BASE_DIR,os.path.join(BASE_DIR, 'game2048/template/'),os.path.join(BASE_DIR, 'games/template/'),os.path.join(BASE_DIR, 'mytask/template/'),os.path.join(BASE_DIR, 'firstlook/template/'),os.path.join(BASE_DIR, 'login_signup/template/'),os.path.join(BASE_DIR, 'login_signup/views/Login_v1/Login_v1/')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,15 +89,16 @@ WSGI_APPLICATION = 'mybestpal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
+        'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mybestpalV2',
+        'NAME': 'mybestpalV3',
         'HOST': 'localhost',
         'USER': "root",
         'PASSWORD': "mysql"
+        }
     }
-}
 
 
 # Password validation
@@ -128,18 +137,43 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+#
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+
+# mysql://b905d83450da86:c6a86722@us-cdbr-iron-east-04.cleardb.net/heroku_28634ab26747abb?reconnect=true
+
+# DATABASES['default'] = {
+#     'ENGINE': 'django.db.backends.mysql',
+#     'HOST': 'us-cdbr-iron-east-04.cleardb.net',
+#     'USER': 'b905d83450da86',
+#     'NAME': 'heroku_28634ab26747abb',
+#     'PASSWORD': 'c6a86722',
+#     'OPTIONS': {'ssl': {'ca': '/path/to/cert.pem', 'cert': '/path/to/cert.pem', 'key': '/path/to/key.pem'}, },
+# }
+#
+
+
+
 STATIC_URL = '/static/'
-STATIC_ROOT = "/static/"
+#STATIC_ROOT = "/static/"
 
 
-INTERNAL_IPS=["127.0.0.1"]
+#INTERNAL_IPS=["127.0.0.1"]
 
 STATICFILES_DIRS = [
 
     os.path.join(BASE_DIR, "static/login_signup/"),
     os.path.join(BASE_DIR, "static/first_look/"),
-
-
-
+    os.path.join(BASE_DIR, "static/games/"),
+    os.path.join(BASE_DIR, "static/game2048/"),
+    os.path.join(BASE_DIR, "static"),
 
 ]
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

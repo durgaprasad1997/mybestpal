@@ -9,6 +9,7 @@ app_name="firstlook"
 
 urlpatterns=[
 
+    path('', Index_View.as_view(), name="index"),
     path('index/', Index_View.as_view(), name="index"),
 
     path('menu_index/', Second_View.as_view(), name="menu_index"),

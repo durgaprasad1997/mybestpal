@@ -9,7 +9,7 @@ from email.mime.text import MIMEText
 import socket
 
 from twilio.rest import Client
-
+import requests
 
 
 def sender(args):
@@ -68,25 +68,30 @@ def sender(args):
 
 
 def smssender(args):
-    account_sid = "AC6d58248bfbbc34ec89455a886f783ab3"
 
-    auth_token = "e7b8119c4e8758105edc0c2e60df32e9"
+    print(args)
 
-    client = Client(account_sid, auth_token)
-    tophno="+91"+str(args[2])
-    msg="msg from mybest pal admin you scheduled a task this time for  "+args[0]+" describing  "+args[1]+" thank you have a good day"
+    url = "https://www.fast2sms.com/dev/bulk"
+    s = args[2]
+    msg = "msg from mybest pal admin you scheduled a task this time for  " + args[0] + " describing  " + args[1] + " thank you have a good day"
+    payload = "sender_id=FSTSMS&message=" + msg + "&language=english&route=p&numbers=" + s
+    headers = {
+        'authorization': "GxeVaoMR9Lluuxjw3QQV3AaLkRgYnSmL4ForqqadV43lHSV8ZkLrlAu3fjvC",
+        'Content-Type': "application/x-www-form-urlencoded",
+        'Cache-Control': "no-cache",
+    }
 
 
-    message = client.messages.create(
-        to=tophno,
-        from_="+17609913393",
-        body=msg)
+    response = requests.request("POST", url, data=payload, headers=headers)
+
+    print(response.text)
+    print("sent")
 
 
 
 
 def sendalert(*args):
-    print(args)
+
     sender(args)
 
 def sendsmsalert(*args):
@@ -100,10 +105,13 @@ def create_schedule(ye,m,d,hr,mn,se,minse,type,descrption,email,phno):
     y = x.replace(year=ye,month=m,day=d,hour=hr, minute=mn, second=se, microsecond=minse)
     delta_t = y - x
     secs = delta_t.seconds + 1
+
+    t2 = Timer(secs, sendsmsalert, args=[type, descrption, phno])
+    t2.start()
+
     t = Timer(secs, sendalert,args=[type,descrption,email])
     t.start()
-    t2 = Timer(secs, sendsmsalert, args=[type,descrption,phno])
-    t2.start()
+
 
 
 def start_schedule(y,m,d,hr,mn,se,minse,type,description,email,phno):

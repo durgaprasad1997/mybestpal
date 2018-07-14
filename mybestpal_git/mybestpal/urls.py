@@ -28,6 +28,12 @@ urlpatterns = [
     url(r'^', include('firstlook.urls')),
     url(r'^', include('login_signup.urls')),
     url(r'^', include('mytask.urls')),
+    url(r'^', include('games.urls')),
+    url(r'^', include('game2048.urls')),
+    url(r'^', include('gametictactoe.urls')),
+
+
+
 
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

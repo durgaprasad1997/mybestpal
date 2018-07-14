@@ -10,6 +10,9 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate
 from mytask.views.alert import *
+from main.models import MyTask
+from main.models import User
+from main.models import UserProfile
 
 class AddTask(forms.ModelForm):
     class Meta:
@@ -64,6 +67,7 @@ class AddTaskView(LoginRequiredMixin,CreateView):
 
     def post(self, request, *args, **kwargs):
         user = get_object_or_404(User, pk=kwargs.get('user_id'))
+        userprofile=get_object_or_404(UserProfile, user_id=kwargs.get('user_id'))
         userform = AddTask(request.POST)
 
         if userform.is_valid():
@@ -78,7 +82,7 @@ class AddTaskView(LoginRequiredMixin,CreateView):
           des=userform.cleaned_data['description']
 
 
-          start_schedule(dt.year, dt.month, dt.day, tm.hour, tm.minute, 0, 0,ty,des,user.email,user.phno)
+          start_schedule(dt.year, dt.month, dt.day, tm.hour, tm.minute, 0, 0,ty,des,user.email,userprofile.phno)
 
 
 
